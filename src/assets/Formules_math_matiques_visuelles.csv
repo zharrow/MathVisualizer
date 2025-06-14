@@ -1,0 +1,41 @@
+Nom de la formule,Formule,Catégorie,Applications visuelles
+Équation quadratique,ax² + bx + c = 0,Algèbre,"Courbes, résolution graphique"
+Équation cubique,ax³ + bx² + cx + d = 0,Algèbre,Formes complexes
+Identité remarquable,(a + b)² = a² + 2ab + b²,Algèbre,Décomposition graphique
+Produit remarquable,(a - b)(a + b) = a² - b²,Algèbre,Effets symétriques
+Factorisation,ax² + bx = x(ax + b),Algèbre,Visualisation du regroupement
+Dérivée de f(x),f'(x) = lim(h→0)[f(x+h)-f(x)]/h,Analyse,"Tangentes, pente instantanée"
+Intégrale définie,∫ₐᵇ f(x) dx,Analyse,Aire sous une courbe
+Limite,lim(x→a) f(x),Analyse,Comportement aux bords
+Série de Taylor,f(x) ≈ f(a) + f'(a)(x-a) + ...,Analyse,Approximations animées
+Croissance exponentielle,y = Ce^{kt},Analyse,Courbes de croissance
+Distance entre 2 points,d = √((x₂-x₁)² + (y₂-y₁)²),Géométrie analytique,Mesure de déplacement
+Milieu d’un segment,"M = ((x₁+x₂)/2, (y₁+y₂)/2)",Géométrie analytique,Visualisation de points centraux
+Équation du cercle,x² + y² = r²,Géométrie analytique,Cercle simple
+Ellipse,(x²/a²) + (y²/b²) = 1,Géométrie analytique,Visualisation orbitale
+Hyperbole,(x²/a²) - (y²/b²) = 1,Géométrie analytique,"Axes croisés, effet dramatique"
+Identité fondamentale,sin²x + cos²x = 1,Trigonométrie,Cercles trigonométriques
+Loi des sinus,a/sinA = b/sinB,Trigonométrie,Triangulation
+Loi des cosinus,c² = a² + b² - 2ab cos(C),Trigonométrie,Mesure d’angles visuels
+Fonction sinusoïdale,y = A sin(Bx + C) + D,Trigonométrie,Oscillations
+Cercle trigonométrique,"x = cosθ, y = sinθ",Trigonométrie,Rotation angulaire
+Forme algébrique,z = a + bi,Nombres complexes,Plans complexes
+Forme exponentielle,z = re^{iθ},Nombres complexes,Spirales
+Module,|z| = √(a² + b²),Nombres complexes,Rayons dynamiques
+Produit complexe,z₁z₂ = r₁r₂ e^{i(θ₁+θ₂)},Nombres complexes,Rotation et échelle
+Fractale de Mandelbrot,z = z² + c,Nombres complexes,Exploration infinie
+Espérance,E(X) = ∑ xP(x),Probabilités et statistiques,Centre de distribution
+Variance,Var(X) = E[(X - μ)²],Probabilités et statistiques,Dispersion graphique
+Écart-type,σ = √Var(X),Probabilités et statistiques,Échelle d’écart
+Loi normale,f(x) = ...,Probabilités et statistiques,Courbe en cloche
+Loi binomiale,"P(k) = C(n, k)p^k(1-p)^{n-k}",Probabilités et statistiques,Histogrammes
+Suite arithmétique,uₙ = u₀ + nr,Suites et séries,Progression linéaire
+Suite géométrique,uₙ = u₀·qⁿ,Suites et séries,Croissance exponentielle
+Somme de n premiers,S = n(n+1)/2,Suites et séries,Triangulation animée
+Suite de Fibonacci,F(n) = F(n-1) + F(n-2),Suites et séries,Spirales naturelles
+Série harmonique,∑ 1/n,Suites et séries,Graphes denses
+Attracteur de Lorenz,...,Fractales et systèmes dynamiques,Chaotique en 3D
+Ensemble de Julia,z = z² + c,Fractales et systèmes dynamiques,Exploration fractale
+Système logistique,xₙ₊₁ = rxₙ(1 - xₙ),Fractales et systèmes dynamiques,Transition ordre/chaos
+Dragon de Heighway,Itération géométrique,Fractales et systèmes dynamiques,Fractale animée
+Tapis de Sierpinski,Subdivision récursive,Fractales et systèmes dynamiques,Réduction d’échelle

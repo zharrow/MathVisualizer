@@ -17,15 +17,16 @@ const MathFormulaVisualizer = () => {
   useEffect(() => {
     const loadFormulas = async () => {
       try {
-        const response = await fetch('/Formules_math_matiques_visuelles.csv');
+        // Pour Vite, le fichier dans src/assets peut être importé directement
+        const response = await fetch('/src/assets/Formules_math_matiques_visuelles.csv');
         const text = await response.text();
-        const lines = response.split('\n').filter(line => line.trim());
+        const lines = text.split('\n').filter(line => line.trim());
         const headers = lines[0].split(',').map(h => h.trim());
         
         const data = lines.slice(1).map(line => {
           const values = line.split(',').map(v => v.trim());
           return headers.reduce((obj, header, index) => {
-            obj[header] = values[index];
+            obj[header] = values[index] || '';
             return obj;
           }, {});
         });
@@ -33,13 +34,70 @@ const MathFormulaVisualizer = () => {
         setFormulas(data);
       } catch (error) {
         console.error('Error loading formulas:', error);
+        // Utiliser les données déjà présentes dans le fichier CSV
+        const csvData = `Nom de la formule,Formule,Catégorie,Applications visuelles
+Équation quadratique,ax² + bx + c = 0,Algèbre,Courbes, résolution graphique
+Équation cubique,ax³ + bx² + cx + d = 0,Algèbre,Formes complexes
+Identité remarquable,(a + b)² = a² + 2ab + b²,Algèbre,Décomposition graphique
+Produit remarquable,(a - b)(a + b) = a² - b²,Algèbre,Effets symétriques
+Factorisation,ax² + bx = x(ax + b),Algèbre,Visualisation du regroupement
+Dérivée de f(x),f'(x) = lim(h→0)[f(x+h)-f(x)]/h,Analyse,Tangentes, pente instantanée
+Intégrale définie,∫ₐᵇ f(x) dx,Analyse,Aire sous une courbe
+Limite,lim(x→a) f(x),Analyse,Comportement aux bords
+Série de Taylor,f(x) ≈ f(a) + f'(a)(x-a) + ...,Analyse,Approximations animées
+Croissance exponentielle,y = Ce^{kt},Analyse,Courbes de croissance
+Distance entre 2 points,d = √((x₂-x₁)² + (y₂-y₁)²),Géométrie analytique,Mesure de déplacement
+Milieu d'un segment,M = ((x₁+x₂)/2, (y₁+y₂)/2),Géométrie analytique,Visualisation de points centraux
+Équation du cercle,x² + y² = r²,Géométrie analytique,Cercle simple
+Ellipse,(x²/a²) + (y²/b²) = 1,Géométrie analytique,Visualisation orbitale
+Hyperbole,(x²/a²) - (y²/b²) = 1,Géométrie analytique,Axes croisés, effet dramatique
+Identité fondamentale,sin²x + cos²x = 1,Trigonométrie,Cercles trigonométriques
+Loi des sinus,a/sinA = b/sinB,Trigonométrie,Triangulation
+Loi des cosinus,c² = a² + b² - 2ab cos(C),Trigonométrie,Mesure d'angles visuels
+Fonction sinusoïdale,y = A sin(Bx + C) + D,Trigonométrie,Oscillations
+Cercle trigonométrique,x = cosθ, y = sinθ,Trigonométrie,Rotation angulaire
+Forme algébrique,z = a + bi,Nombres complexes,Plans complexes
+Forme exponentielle,z = re^{iθ},Nombres complexes,Spirales
+Module,|z| = √(a² + b²),Nombres complexes,Rayons dynamiques
+Produit complexe,z₁z₂ = r₁r₂ e^{i(θ₁+θ₂)},Nombres complexes,Rotation et échelle
+Fractale de Mandelbrot,z = z² + c,Nombres complexes,Exploration infinie
+Espérance,E(X) = ∑ xP(x),Probabilités et statistiques,Centre de distribution
+Variance,Var(X) = E[(X - μ)²],Probabilités et statistiques,Dispersion graphique
+Écart-type,σ = √Var(X),Probabilités et statistiques,Échelle d'écart
+Loi normale,f(x) = ...,Probabilités et statistiques,Courbe en cloche
+Loi binomiale,P(k) = C(n, k)p^k(1-p)^{n-k},Probabilités et statistiques,Histogrammes
+Suite arithmétique,uₙ = u₀ + nr,Suites et séries,Progression linéaire
+Suite géométrique,uₙ = u₀·qⁿ,Suites et séries,Croissance exponentielle
+Somme de n premiers,S = n(n+1)/2,Suites et séries,Triangulation animée
+Suite de Fibonacci,F(n) = F(n-1) + F(n-2),Suites et séries,Spirales naturelles
+Série harmonique,∑ 1/n,Suites et séries,Graphes denses
+Attracteur de Lorenz,...,Fractales et systèmes dynamiques,Chaotique en 3D
+Ensemble de Julia,z = z² + c,Fractales et systèmes dynamiques,Exploration fractale
+Système logistique,xₙ₊₁ = rxₙ(1 - xₙ),Fractales et systèmes dynamiques,Transition ordre/chaos
+Dragon de Heighway,Itération géométrique,Fractales et systèmes dynamiques,Fractale animée
+Tapis de Sierpinski,Subdivision récursive,Fractales et systèmes dynamiques,Réduction d'échelle`;
+        
+        const lines = csvData.split('\n').filter(line => line.trim());
+        const headers = lines[0].split(',').map(h => h.trim());
+        
+        const data = lines.slice(1).map(line => {
+          const values = line.split(',').map(v => v.trim());
+          return headers.reduce((obj, header, index) => {
+            obj[header] = values[index] || '';
+            return obj;
+          }, {});
+        });
+        
+        setFormulas(data);
       }
     };
     
     loadFormulas();
   }, []);
 
-   // Animation continue
+  const currentFormula = formulas[currentIndex] || {};
+  
+  // Animation continue
   useEffect(() => {
     const animate = () => {
       setParams(prev => ({
@@ -248,33 +306,128 @@ const MathFormulaVisualizer = () => {
     }
   }, [params, currentIndex, formulas]);
   
-  const currentFormula = formulas[currentIndex] || {};
-  
-  // Animation continue
-  useEffect(() => {
-    const animate = () => {
-      setParams(prev => ({
-        ...prev,
-        time: prev.time + 0.02,
-        theta: (prev.theta + 0.02) % (2 * Math.PI)
-      }));
-      animationRef.current = requestAnimationFrame(animate);
-    };
+  // Obtenir les contrôles appropriés pour chaque formule
+  const getControls = () => {
+    const index = currentIndex + 1;
     
-    if (animating) {
-      animationRef.current = requestAnimationFrame(animate);
-    } else if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
+    if (index <= 5) { // Algèbre
+      return ['a', 'b', 'c', 'd'].slice(0, index === 2 ? 4 : 3);
+    } else if (index <= 10) { // Analyse
+      return ['a', 'b', 'c', 'iterations'];
+    } else if (index <= 15) { // Géométrie
+      if (index === 11 || index === 12) return ['x1', 'y1', 'x2', 'y2'];
+      return ['a', 'b', 'r'];
+    } else if (index <= 20) { // Trigonométrie
+      return ['amplitude', 'frequency', 'phase', 'theta'];
+    } else if (index <= 25) { // Complexes
+      return ['a', 'b', 'zoom', 'iterations'];
+    } else if (index <= 30) { // Stats
+      return ['a', 'b', 'n'];
+    } else if (index <= 35) { // Suites
+      return ['a', 'r', 'n'];
+    } else { // Fractales
+      return ['zoom', 'iterations', 'a', 'b'];
     }
-    
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [animating]);
+  };
   
-  // Fonctions de visualisation
+  const controls = getControls();
+  
+  return (
+    <div className="min-h-screen bg-black text-white font-mono">
+      <div className="container mx-auto p-6">
+        {/* Header */}
+        <div className="border border-white p-4 mb-6">
+          <h1 className="text-3xl font-bold mb-2">Visualiseur de Formules Mathématiques</h1>
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl text-green-400">{currentFormula['Nom de la formule'] || 'Chargement...'}</h2>
+              <p className="text-gray-400">{currentFormula['Catégorie']}</p>
+            </div>
+            <div className="text-2xl text-yellow-400 font-bold">
+              {currentFormula['Formule']}
+            </div>
+          </div>
+        </div>
+        
+        {/* Canvas */}
+        <div className="border border-white p-4 mb-6">
+          <canvas 
+            ref={canvasRef}
+            width={800}
+            height={600}
+            className="w-full max-w-4xl mx-auto bg-gray-900"
+          />
+        </div>
+        
+        {/* Contrôles */}
+        <div className="border border-white p-4 mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg">Paramètres</h3>
+            <button
+              onClick={() => setAnimating(!animating)}
+              className={`px-4 py-2 border border-white transition-colors ${
+                animating ? 'bg-white text-black' : 'hover:bg-white hover:text-black'
+              }`}
+            >
+              {animating ? 'Pause' : 'Animer'}
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {controls.map(param => (
+              <div key={param} className="space-y-2">
+                <label className="text-sm text-gray-400">
+                  {param} = {params[param].toFixed(2)}
+                </label>
+                <input
+                  type="range"
+                  min={getParamRange(param).min}
+                  max={getParamRange(param).max}
+                  step={getParamRange(param).step}
+                  value={params[param]}
+                  onChange={(e) => setParams(prev => ({ 
+                    ...prev, 
+                    [param]: parseFloat(e.target.value) 
+                  }))}
+                  className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Navigation */}
+        <div className="flex justify-between mt-6">
+          <button 
+            className="px-4 py-2 border border-white hover:bg-white hover:text-black transition-colors disabled:opacity-50"
+            onClick={() => {
+              setCurrentIndex(Math.max(0, currentIndex - 1));
+              setParams(prev => ({ ...prev, time: 0, iterations: 100 }));
+            }}
+            disabled={currentIndex === 0}
+          >
+            ← Précédent
+          </button>
+          <span className="flex items-center">
+            {currentIndex + 1} / {formulas.length}
+          </span>
+          <button 
+            className="px-4 py-2 border border-white hover:bg-white hover:text-black transition-colors disabled:opacity-50"
+            onClick={() => {
+              setCurrentIndex(Math.min(formulas.length - 1, currentIndex + 1));
+              setParams(prev => ({ ...prev, time: 0, iterations: 100 }));
+            }}
+            disabled={currentIndex >= formulas.length - 1}
+          >
+            Suivant →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Fonctions de visualisation
 function drawQuadratic(ctx, params, toCanvasX, toCanvasY, width, height) {
   const { a, b, c } = params;
   
@@ -1652,129 +1805,5 @@ function drawSierpinskiCarpet(ctx, params, toCanvasX, toCanvasY, width, height) 
   
   drawCarpet(centerX - size/2, centerY - size/2, size, Math.min(iterations / 20, 5));
 }
-
-  // Obtenir les contrôles appropriés pour chaque formule
-  const getControls = () => {
-    const index = currentIndex + 1;
-    
-    if (index <= 5) { // Algèbre
-      return ['a', 'b', 'c', 'd'].slice(0, index === 2 ? 4 : 3);
-    } else if (index <= 10) { // Analyse
-      return ['a', 'b', 'c', 'iterations'];
-    } else if (index <= 15) { // Géométrie
-      if (index === 11 || index === 12) return ['x1', 'y1', 'x2', 'y2'];
-      return ['a', 'b', 'r'];
-    } else if (index <= 20) { // Trigonométrie
-      return ['amplitude', 'frequency', 'phase', 'theta'];
-    } else if (index <= 25) { // Complexes
-      return ['a', 'b', 'zoom', 'iterations'];
-    } else if (index <= 30) { // Stats
-      return ['a', 'b', 'n'];
-    } else if (index <= 35) { // Suites
-      return ['a', 'r', 'n'];
-    } else { // Fractales
-      return ['zoom', 'iterations', 'a', 'b'];
-    }
-  };
-  
-  const controls = getControls();
-  
-  return (
-    <div className="min-h-screen bg-black text-white font-mono">
-      <div className="container mx-auto p-6">
-        {/* Header */}
-        <div className="border border-white p-4 mb-6">
-          <h1 className="text-3xl font-bold mb-2">Visualiseur de Formules Mathématiques</h1>
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-xl text-green-400">{currentFormula['Nom de la formule'] || 'Chargement...'}</h2>
-              <p className="text-gray-400">{currentFormula['Catégorie']}</p>
-            </div>
-            <div className="text-2xl text-yellow-400 font-bold">
-              {currentFormula['Formule']}
-            </div>
-          </div>
-        </div>
-        
-        {/* Canvas */}
-        <div className="border border-white p-4 mb-6">
-          <canvas 
-            ref={canvasRef}
-            width={800}
-            height={600}
-            className="w-full max-w-4xl mx-auto bg-gray-900"
-          />
-        </div>
-        
-        {/* Contrôles */}
-        <div className="border border-white p-4 mb-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg">Paramètres</h3>
-            <button
-              onClick={() => setAnimating(!animating)}
-              className={`px-4 py-2 border border-white transition-colors ${
-                animating ? 'bg-white text-black' : 'hover:bg-white hover:text-black'
-              }`}
-            >
-              {animating ? 'Pause' : 'Animer'}
-            </button>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {controls.map(param => (
-              <div key={param} className="space-y-2">
-                <label className="text-sm text-gray-400">
-                  {param} = {params[param].toFixed(2)}
-                </label>
-                <input
-                  type="range"
-                  min={getParamRange(param).min}
-                  max={getParamRange(param).max}
-                  step={getParamRange(param).step}
-                  value={params[param]}
-                  onChange={(e) => setParams(prev => ({ 
-                    ...prev, 
-                    [param]: parseFloat(e.target.value) 
-                  }))}
-                  className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-        
-        {/* Navigation */}
-        <div className="flex justify-between mt-6">
-          <button 
-            className="px-4 py-2 border border-white hover:bg-white hover:text-black transition-colors disabled:opacity-50"
-            onClick={() => {
-              setCurrentIndex(Math.max(0, currentIndex - 1));
-              setParams(prev => ({ ...prev, time: 0, iterations: 100 }));
-            }}
-            disabled={currentIndex === 0}
-          >
-            ← Précédent
-          </button>
-          <span className="flex items-center">
-            {currentIndex + 1} / {formulas.length}
-          </span>
-          <button 
-            className="px-4 py-2 border border-white hover:bg-white hover:text-black transition-colors disabled:opacity-50"
-            onClick={() => {
-              setCurrentIndex(Math.min(formulas.length - 1, currentIndex + 1));
-              setParams(prev => ({ ...prev, time: 0, iterations: 100 }));
-            }}
-            disabled={currentIndex >= formulas.length - 1}
-          >
-            Suivant →
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Ajouter toutes les fonctions de dessin ici...
-// (Copier toutes les fonctions drawQuadratic, drawCubic, etc. depuis l'artifact original)
 
 export default MathFormulaVisualizer;
